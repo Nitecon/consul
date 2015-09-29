@@ -7,6 +7,7 @@ import (
 	"strings"
 	"syscall"
 	"time"
+	"github.com/jaschaephraim/lrserver"
 )
 
 var (
@@ -19,6 +20,16 @@ var (
 	appLog       logFunc
 )
 
+const html = `<!doctype html>
+<html>
+<head>
+  <title>Example</title>
+</head>
+<body>
+  <script src="http://localhost:35729/livereload.js"></script>
+</body>
+</html>`
+
 func flushEvents() {
 	for {
 		select {
@@ -30,7 +41,19 @@ func flushEvents() {
 	}
 }
 
+func liveReload(e string, lr *lrserver.Server) {
+	if strings.Contains(e, ":"){
+		fname := strings.Split(e,":")[0]
+		es := fname[1:len(fname)-1]
+		mainLog("===========>LiveReload: %s", es)
+		lr.Reload(es)
+	}
+
+}
+
 func start() {
+	lr, _ := lrserver.New(lrserver.DefaultName, lrserver.DefaultPort)
+	go lr.ListenAndServe()
 	loopIndex := 0
 	buildDelay := buildDelay()
 
@@ -43,6 +66,7 @@ func start() {
 			eventName := <-startChannel
 
 			mainLog("receiving first event %s", eventName)
+
 			mainLog("sleeping for %d milliseconds", buildDelay)
 			time.Sleep(buildDelay * time.Millisecond)
 			mainLog("flushing events")
@@ -68,7 +92,7 @@ func start() {
 				}
 				run()
 			}
-
+			liveReload(eventName, lr)
 			started = true
 			mainLog(strings.Repeat("-", 20))
 		}

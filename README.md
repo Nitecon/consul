@@ -1,8 +1,7 @@
-# Fresh
+# Consul
 
-[![Join the chat at https://gitter.im/pilu/fresh](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/pilu/fresh?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
-Fresh is a command line tool that builds and (re)starts your web application everytime you save a Go or template file.
+Consul is a command line tool that builds and (re)starts your web application everytime you save a Go or template file, this repository was forked from the original fresh,
+application in order to add live reload functionality.  It's a very basic hack to get it working, but it works really well.
 
 If the web framework you are using supports the Fresh runner, it will show build errors on your browser.
 
@@ -10,7 +9,7 @@ It currently works with [Traffic](https://github.com/pilu/traffic), [Martini](ht
 
 ## Installation
 
-    go get github.com/pilu/fresh
+    go get github.com/Nitecon/consul
 
 ## Usage
 
@@ -18,7 +17,7 @@ It currently works with [Traffic](https://github.com/pilu/traffic), [Martini](ht
 
 Start fresh:
 
-    fresh
+    consul
 
 Fresh will watch for file events, and every time you create/modifiy/delete a file it will build and restart the application.
 If `go build` returns an error, it will log it in the tmp folder.
@@ -28,7 +27,7 @@ Check the `_examples` folder if you want to use it with Martini or Gocraft Web.
 
 You can use the `-c` options if you want to specify a config file:
 
-    fresh -c runner.conf
+    consul -c runner.conf
 
 Here is a sample config file with the default settings:
 
@@ -46,7 +45,7 @@ Here is a sample config file with the default settings:
     log_color_app:
 
 ## Author
-
+* [Will Hattingh](http://www.nitecon.com)
 * [Andrea Franz](http://gravityblast.com)
 
 ## More
