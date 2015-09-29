@@ -91,8 +91,9 @@ func start() {
 					stopChannel <- true
 				}
 				run()
+				liveReload(eventName, lr)
 			}
-			liveReload(eventName, lr)
+
 			started = true
 			mainLog(strings.Repeat("-", 20))
 		}
