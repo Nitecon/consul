@@ -42,6 +42,25 @@ func isWatchedFile(path string) bool {
 	return false
 }
 
+func isIgnoredDir(path string) bool {
+	absolutePath, _ := filepath.Abs(path)
+	absoluteTmpPath, _ := filepath.Abs(tmpPath())
+
+	if strings.HasPrefix(absolutePath, absoluteTmpPath) {
+		return true
+	}
+
+
+	for _, e := range strings.Split(settings["ignore_dirs"], ",") {
+		igAbsPath, _ := filepath.Abs(strings.TrimSpace(e))
+		if igAbsPath == absolutePath {
+			return true
+		}
+	}
+
+	return false
+}
+
 func createBuildErrorsLog(message string) bool {
 	file, err := os.Create(buildErrorsFilePath())
 	if err != nil {

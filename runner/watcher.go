@@ -39,19 +39,21 @@ func watch() {
 	root := root()
 	/* This was added from https://github.com/jsimnz/fresh/commit/9d8e121f043d783c52bcb4a6f2644304f37f18b9 */
 	ignorePathsArr := strings.Split(settings["ignore_dirs"], ",")
-	ignorePaths := make(map[string]bool)
-	for _, ipath := range ignorePathsArr{
-		if strings.HasPrefix(ipath, " ") || strings.HasSuffix(ipath, " "){
-			ipath = strings.Trim(ipath, " ")
-			absolutePath, _ := filepath.Abs(ipath)
-			ignorePaths[absolutePath] = true
-		}
-	}
-	watcherLog("Ignore Paths: %v", ignorePaths)
+
+	watcherLog("Ignore Paths: %v", ignorePathsArr)
 
 	filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
-		if info.IsDir() && !isTmpDir(path) {
-			if _, ignore := ignorePaths[info.Name()]; (len(path) > 1 && strings.HasPrefix(filepath.Base(path), ".")) || ignore {
+		if info.IsDir() && !isTmpDir(path) && !isIgnoredDir(path) {
+			for _, igp := range ignorePathsArr{
+				absIgp, _ := filepath.Abs(igp)
+				absPath, _ := filepath.Abs(path)
+				if strings.Contains(absPath, absIgp){
+					watcherLog("Ignoring %s", path)
+					return filepath.SkipDir
+				}
+			}
+			if len(path) > 1 && strings.HasPrefix(filepath.Base(path), ".") {
+				watcherLog("Ignoring %s", path)
 				return filepath.SkipDir
 			}
 			watchFolder(path)

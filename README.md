@@ -42,7 +42,11 @@ Here is a sample config file with the default settings:
     log_color_build:   yellow
     log_color_runner:  green
     log_color_watcher: magenta
+    ignore_dirs:       vendor, logs
     log_color_app:
+
+
+### Please note that in the list above the ignored_dirs is comma seperated list of relative directories.
 
 ## Author
 * [Will Hattingh](http://www.nitecon.com)
