@@ -1,0 +1,7 @@
+package: github.com/Nitecon/consul
+import:
+- package: github.com/howeyc/fsnotify
+- package: github.com/jaschaephraim/lrserver
+- package: github.com/pilu/config
+testImport:
+- package: github.com/pilu/miniassert
