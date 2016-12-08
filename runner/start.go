@@ -52,7 +52,7 @@ func liveReload(e string, lr *lrserver.Server) {
 }
 
 func start() {
-	lr, _ := lrserver.New(lrserver.DefaultName, lrserver.DefaultPort)
+	lr := lrserver.New(lrserver.DefaultName, lrserver.DefaultPort)
 	go lr.ListenAndServe()
 	loopIndex := 0
 	buildDelay := buildDelay()
